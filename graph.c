@@ -45,15 +45,21 @@ const struct color_def color_defaults[]={
 	C_AXISUNITNAME,			255,	0,		0,
 	C_NONE,					0,		0,		0
 };
+/* culorile, pe componente rgb, pentru diferitele elemente ale graficului
+ * TODO: sa fie configurabile din fisierul de comenzi */
 
 int init_graph(struct graph *g, int w, int h) {
 	const struct color_def *c;
 
 	debug(1, "init_graph: Allocating %dx%d image.\n", w, h);
 	if ((g->img=gdImageCreate(w, h))==NULL) return 1;
+	/* creez (aloc) imaginea propriuzisa in libgd */
 	for (c=color_defaults; c->col!=C_NONE; c++) {
 		g->col[c->col]=gdImageColorAllocate(g->img, c->def.r, c->def.g, c->def.b);
 		/* FIXME: test succes alocare */
+		/* in felul acesta, g->col[CONSTANTA_CULOARE] (constantele de culoare sunt
+		 * definite in graph.h si incep cu C_) da indexul in paleta de culori la care
+		 * se gaseste culoarea respectiva */
 	}
 
 	return 0;
@@ -63,14 +69,31 @@ typedef void (*_w_val)(struct graph *, double, int, int);
 
 static void _draw_grid(struct graph *g, double dx, double dy, int col,
 		_w_val xval, _w_val yval, int xmin, int ymin, int xmax, int ymax) {
+	/* deseneaza o grila;
+	 * in dx, dy -> dimensiunea in coord. logice;
+	 * xmin, ymin, xmax, ymax sunt extremitatile domeniului de vizibilitate in
+	 * coord. fizice
+	 */
 	int x1, y1, x2, y2;
 	int x, y;
 
 	x2=abs_floor(g->xmax/dx);
 	y2=abs_floor(g->ymax/dy);
+	/* abs_floor si abs_ceil sunt macrouri definite in graph.h si realizeaza rotunjire
+	 * catre intregul cel mai mic in modul (floor) si cel mai mare in modul (ceil) din
+	 * vecinatatea argumetului
+	 *
+	 * le folosesc ca sa trasez grila incepand cu un multiplu intreg de unitate pe x sau
+	 * y, in caz ca xrange sau yrange au valori care nu sunt multipli intregi de unitate */
 
 	for (x1=abs_ceil(g->xmin/dx); x1<=x2; x1++) {
 		x=XC(g, x1*dx);
+		/* lucrez cu nr._de_diviziuni*dimensiunea_diviziunii, si nu adaug la fiecare pas
+		 * dimensiunea diviziunii, pentru ca altfel am eroare in virgula mobila (dc. valoarea
+		 * adunata e mult mai mica decat cea la care se aduna, pot sa ajung chiar sa obtin
+		 * valoarea ca si cand as fi adunat 0 - vezi ESSC - aducerea la ordinul de marime al
+		 * operandului cel mai mare la adunare in virgula mobila si seminar x cu Val Petru
+		 * pentru solutie) */
 		gdImageLine(g->img, x, ymin, x, ymax, col);
 		if (xval!=NULL) xval(g, x1*dx, x, ymin);
 	}
@@ -86,6 +109,7 @@ static void _draw_grid(struct graph *g, double dx, double dy, int col,
 /* distanta dintre grafic si valorile coordonatelor, in pixeli */
 
 static void _xcoord(struct graph *g, double val, int x, int y) {
+	/* functie pentru scrierea valorii coordonatei in stanga axei verticale */
 	char buf[15];
 	/* FIXME: daca 15 nu e destul? */
 	gdFont *fnt=fonts[g->font_size];
@@ -97,6 +121,7 @@ static void _xcoord(struct graph *g, double val, int x, int y) {
 }
 
 static void _ycoord(struct graph *g, double val, int x, int y) {
+	/* functie pentru scrierea valorii coordonatei dedesuptul axei orizontale */
 	char buf[15];
 	/* FIXME: daca 15 nu e destul? */
 	gdFont *fnt=fonts[g->font_size];
@@ -108,6 +133,7 @@ static void _ycoord(struct graph *g, double val, int x, int y) {
 }
 
 static void _xunit(struct graph *g, int x, int y) {
+	/* functie care scrie numele si simbolul marimii de pe axa orizontala */
 	char *buf;
 	int l;
 	
@@ -123,6 +149,7 @@ static void _xunit(struct graph *g, int x, int y) {
 }
 
 static void _yunit(struct graph *g, int x, int y) {
+	/* functie care scrie numele si simbolul marimii de pe axa verticala */
 	char *buf;
 	int l;
 	
@@ -137,6 +164,7 @@ static void _yunit(struct graph *g, int x, int y) {
 }
 
 void draw_grid(struct graph *g) {
+	/* deseneaza grila completa (cu diviziuni si subdiviziuni) */
 	int xmin, xmax, ymin, ymax;
 	
 	xmin=XC(g, g->xmin); ymin=YC(g, g->ymin);
@@ -147,6 +175,9 @@ void draw_grid(struct graph *g) {
 	_yunit(g, xmin, ymax);
 }
 
+/* functiile care urmeaza deseneaza "puncte" folosind diferite simboluri;
+ * ceea ce urmeaza dupa point_ da o idee destul de buna despre simbol
+ */
 void point_cross(struct graph *g, double xl, double yl, int col) {
 	int a=5, x=XC(g,xl), y=YC(g,yl);
 
@@ -216,9 +247,11 @@ void draw_legend(struct graph *g) {
 	gdImageRectangle(g->img, g->lx, g->ly, g->lx+g->lfw, g->ly+g->lfh, col);
 	y=g->ly+(g->lfh-(g->ngrps+2)*fnt->h)/2;
 	x=g->lx+g->lfw/2;
+	/* socoteli ca sa desenez ce trebuie in interiorul legendei */
 	gdImageString(g->img, fnt, x-fnt->w*strlen(g->legend_title)/2, y, g->legend_title, col);
 
 	for(max=0,i=1; i<=g->ngrps; i++) if ((l=strlen(g->grps[i].legend))>max) max=l;
+	/* gasesc explicatia de lungime maxima, ca sa pot sa centrez totul in interiorul dreptunghiului */
 	x-=(max*fnt->w+s+w)/2;
 	y+=2*fnt->h;
 	for(i=1; i<=g->ngrps; i++, y+=fnt->h) {
@@ -238,6 +271,7 @@ int main(int argc, char **argv) {
 	fonts[2]=gdFontMediumBold;
 	fonts[3]=gdFontLarge;
 	fonts[4]=gdFontGiant;
+	/* pt. ca in fonts[dimensiune] sa am pointerul corespunzator */
 
 	s=fopen("test.graph", "r");
 	err=run_script(s, &gr);

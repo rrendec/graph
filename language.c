@@ -69,6 +69,10 @@ static int drawgrid_s(void *c) {
 				(C(c)->g->lh+C(c)->g->ls)*C(c)->g->dres)/2)-C(c)->g->lfh;
 	C(c)->g->oy=C(c)->g->ly-(int)rint(C(c)->g->ls*C(c)->g->dres);
 	C(c)->g->lx=(int)rint((w-C(c)->g->lfw)/2);
+	/* aici sunt de baza explicatiile din dreptul fiecarui camp din structura graph (vezi graph.h)
+	 * ideea e ca centrez graficul si legenda pe x, iar pe y centrez grafic+legenda+spatiul_dintre_ele
+	 * si calculez g->ly si g->oy in functie de ele
+	 */
 	debug(1, "Setting physical coordinates of (xmin, ymin) to (%d, %d).\n", C(c)->g->ox, C(c)->g->oy);
 	debug(1, "Setting physical coordinates of legend to (%d, %d).\n", C(c)->g->lx, C(c)->g->ly);
 	debug(1, "Setting physical size of legend to (%d, %d).\n", C(c)->g->lfw, C(c)->g->lfh);

@@ -65,11 +65,19 @@ struct group {
 	char					legend[50];
 };
 
+/* conventii de numire:
+ * coord. logica = coord. in marimea reprezentata pe una din axe
+ * coord. fizica = coord. in sistemul de coordonate al imaginii (1=pixel, originea
+ * in coltul din stanga sus, sensul pe axa verticala de sus in jos)
+ */
+
 struct graph {
 	int						col[N_COL];			/* harta de trecere de la culori la paleta */
 	struct gdImageStruct	*img;
 	int						ox, oy;				/* coordonatele fizice ale punctului de coord. xmin, ymin */
-
+	/* lucrez cu coordonatele punctului (xmin,ymin) si nu cu originea logica pt. ca daca am un
+	 * xrange de genul (400000 : 400000.1) obtin niste coordonate fizice ale originii logice foarte
+	 * "interesante" (overflow) -- multumiri deosebite lui Val Petru! */
 	double					xmin, xmax;			/* domeniul de reprezentare pe X */
 	double					ymin, ymax;			/* domeniul de reprezentare pe Y */
 	double					sx;					/* raport unitate fizica/unitate logica pe X */
@@ -102,6 +110,7 @@ struct graph {
 
 #define XC(g,x)				((int)rint(((x)-(g)->xmin)*(g)->sx)+(g)->ox)
 #define YC(g,y)				(-(int)rint(((y)-(g)->ymin)*(g)->sy)+(g)->oy)
+/* macrouri de trecere de la coordonate logice la coordonate fizice */
 
 #define CR(x)				(((x)&0xff0000)>>16)
 #define CG(x)				(((x)&0x00ff00)>>8)
