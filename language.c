@@ -378,9 +378,62 @@ static int fitline_e(void *c) {
 	return 0;
 }
 
+static int cmmpline_s(void *c) {
+	C(c)->fl_n=0;
+	return 0;
+}
+
+static int cmmpline_a(void *c, char *s) {
+	switch (C(c)->fl_n) {
+	case 0:
+		sscanf(s, "%d", &C(c)->fl_g);
+		break;
+	case 1:
+		sscanf(s, "%lf", &C(c)->fl_xmin);
+		break;
+	case 2:
+		sscanf(s, "%lf", &C(c)->fl_xmax);
+		break;
+	default:
+		sscanf(s, "%d", &C(c)->fl_pts[C(c)->fl_n-3]);
+		break;
+	}
+	C(c)->fl_n++;
+	return 0;
+}
+
+static int cmmpline_e(void *c) {
+	int i;
+	double a, b, s_xy=0, s_x=0, s_y=0, s_x2=0, n;
+	struct point *p;
+	int x1, y1, x2, y2;
+
+	C(c)->fl_n-=3;
+	n=C(c)->fl_n;
+
+	for (i=0; i<C(c)->fl_n; i++) {
+		p=&C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i]-1];
+		s_x+=p->x;
+		s_x2+=p->x*p->x;
+		s_y+=p->y;
+		s_xy+=p->x*p->y;
+	}
+	if (!s_x) return 1;
+	a=(n*s_xy-s_x*s_y)/(n*s_x2-s_x*s_x);
+	b=(s_x2*s_y-s_x*s_xy)/(n*s_x2-s_x*s_x);
+	debug(1, "cmmpline_e: group %d, slope %g\n", C(c)->fl_g, a);
+	x1=XC(C(c)->g, C(c)->fl_xmin);
+	y1=YC(C(c)->g, a*C(c)->fl_xmin+b);
+	x2=XC(C(c)->g, C(c)->fl_xmax);
+	y2=YC(C(c)->g, a*C(c)->fl_xmax+b);
+	gdImageLine(C(c)->g->img, x1, y1, x2, y2, C(c)->g->grps[C(c)->fl_g].col);
+	return 0;
+}
+
 const struct spa_keyword lang_main[]={
 /*	keyword				start			arg				end				bloc_start		bloc_end */
 	"canvassize",		canvassize_s,	canvassize_a,	NULL,			NULL,			NULL,
+	"cmmpline",			cmmpline_s,		cmmpline_a,		cmmpline_e,		NULL,			NULL,
 	"color",			NULL,			color_a,		NULL,			NULL,			NULL,
 	"drawgrid",			drawgrid_s,		NULL,			NULL,			NULL,			NULL,
 	"drawlegend",		drawlegend_s,	NULL,			NULL,			NULL,			NULL,

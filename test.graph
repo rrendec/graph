@@ -1,148 +1,54 @@
-#definitii
+Resolution 150;
 
-Resolution	300;
-#rezolutia in DPI
-
-CanvasSize	0.18 0.2;
-#dimensiunile "pozei" in metri (X Y)
-LegendSize	0.05 0.03;
+CanvasSize .18 .2;
+LegendSize	0.04 0.02;
 LegendSpace 0.01;
 LegendTitle LEGENDA;
 
-XRange		0		30;
-YRange		0		25;
+XRange 2.9e-3 3.4e-3;
+YRange 6.2 6.5;
 
-XGridUnit		1;
-XGridSubUnit	.1;
-XTitle		i;
-XUnitName	mA;
-XScale		.005;
-#scara de reprezentare pe X in metri/unitate a axei x
-#unitatea este socotita 1 relativ la XRange si nu depinde de XGridUnit
+XGridUnit .4e-4;
+XGridSubUnit .04e-4;
+XTitle 1/T;
+XUnitName K^(-1);
+XScale 300;
 
-YGridUnit		1;
-YGridSubUnit	.1;
-YTitle		U;
-YUnitName	mV;
-YScale		.005;
-#scara de reprezentare pe Y in metri/unitate a axei y
+YGridUnit .02;
+YGridSubUnit .002;
+YTitle ln(Rd/kT)^(1/2);
+YUnitName unitate;
+YScale .5;
 
 Group 1;
-	Pt	5	2;
-	Pt	10	4.5;
-	Pt	15	6.5;
-	Pt	20	7.5;
-	Pt	25	9;
-	Pt	30	10;
-	Color 0xff0000;
-	Legend IB=0.5A;
+Pt 3.300330e-03 6.485068e+00;
+Pt 3.246753e-03 6.437988e+00;
+Pt 3.194888e-03 6.420381e+00;
+Pt 3.144654e-03 6.400142e+00;
+Pt 3.095975e-03 6.381888e+00;
+Pt 3.048780e-03 6.362494e+00;
+Pt 3.003003e-03 6.347640e+00;
+Pt 2.958580e-03 6.317960e+00;
+Pt 2.915452e-03 6.299271e+00;
+Color 0xff0000;
+Legend Incalzire;
+
 Group 2;
-	Pt	5	2.5;
-	Pt	10	5;
-	Pt	15	7;
-	Pt	20	9;
-	Pt	25	10.5;
-	Pt	30	11.5;
-	Color 0x00ff00;
-	Legend IB=1A;
-Group 3;
-	Pt	5	3;
-	Pt	10	6.5;
-	Pt	15	9;
-	Pt	20	11;
-	Pt	25	12.5;
-	Pt	30	14.5;
-	Color 0x0000ff;
-	Legend IB=1.5A;
-Group 4;
-	Pt	5	3;
-	Pt	10	7;
-	Pt	15	10;
-	Pt	20	12;
-	Pt	25	14.5;
-	Pt	30	16;
-	Color 0x00ffff;
-	Legend IB=2A;
-Group 5;
-	Pt	5	4;
-	Pt	10	7.5;
-	Pt	15	11;
-	Pt	20	13.5;
-	Pt	25	15.5;
-	Pt	30	18;
-	Color 0xff00ff;
-	Legend IB=2.5A;
-Group 6;
-	Pt	5	3.5;
-	Pt	10	8.5;
-	Pt	15	13;
-	Pt	20	15;
-	Pt	25	17.5;
-	Pt	30	20;
-	Color 0xffff00;
-	Legend IB=3A;
-Group 7;
-	Pt	5	4.5;
-	Pt	10	8.5;
-	Pt	15	13.5;
-	Pt	20	16.5;
-	Pt	25	19.5;
-	Pt	30	21.5;
-	Color 0xff7f7f;
-	Legend IB=3.5A;
-Group 8;
-	Pt	5	4.5;
-	Pt	10	9;
-	Pt	15	13.5;
-	Pt	20	17;
-	Pt	25	19.5;
-	Pt	30	22;
-	Color 0x7fff7f;
-	Legend IB=4A;
-Group 9;
-	Pt	5	4.5;
-	Pt	10	10;
-	Pt	15	13.5;
-	Pt	20	17.5;
-	Pt	25	20.5;
-	Pt	30	22.5;
-	Color 0x7f7fff;
-	Legend IB=4.5A;
-Group 10;
-	Pt	5	4;
-	Pt	10	10;
-	Pt	15	14;
-	Pt	20	18;
-	Pt	25	20.5;
-	Pt	30	23;
-	Color 0x7f7f00;
-	Legend IB=5A;
+Pt 2.958580e-03 6.340952e+00;
+Pt 3.003003e-03 6.358640e+00;
+Pt 3.048780e-03 6.375732e+00;
+Pt 3.095975e-03 6.398923e+00;
+Pt 3.144654e-03 6.417815e+00;
+Pt 3.194888e-03 6.445468e+00;
+Pt 3.225806e-03 6.449999e+00;
+Color 0x0000ff;
+Legend Racire;
 
 FontSize 4;
-
-#comenzi
 DrawGrid;
+PlotGroup 1 Cross;
+PlotGroup 2 x;
 DrawLegend;
 
-PlotGroup 1 Cross;
-PlotGroup 2 X;
-PlotGroup 3 Circle;
-PlotGroup 4 Delta;
-PlotGroup 5 Nabla;
-PlotGroup 6 Square;
-PlotGroup 7 Cross;
-PlotGroup 8 X;
-PlotGroup 9 Circle;
-PlotGroup 10 Delta;
-
-FitLine 1 0 0 0 20 1 2 3 4;
-#grup punct_control_x punct_control_y xmin xmax puncte_din_grup
-FitLine 2 0 0 0 20 1 2 3 4;
-FitLine 3 0 0 0 20 1 2 3 4;
-FitLine 4 0 0 0 20 1 2 3 4;
-FitLine 5 0 0 0 20 1 2 3 4;
-FitLine 6 0 0 0 20 1 2 3 4;
-FitLine 7 0 0 0 20 1 2 3 4;
-FitLine 8 0 0 0 20 1 2 3 4;
-FitLine 9 0 0 0 20 1 2 3 4;
-FitLine 10 0 0 0 20 1 2 3 4;
+CmmpLine 1 2.9e-3 .00332 1 2 3 4 5 6 7 8 9;
+CmmpLine 2 2.9e-3 .00332 1 2 3 4 5 6 7;

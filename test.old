@@ -1,0 +1,148 @@
+#definitii
+
+Resolution	300;
+#rezolutia in DPI
+
+CanvasSize	0.18 0.2;
+#dimensiunile "pozei" in metri (X Y)
+LegendSize	0.05 0.03;
+LegendSpace 0.01;
+LegendTitle LEGENDA;
+
+XRange		0		30;
+YRange		0		25;
+
+XGridUnit		1;
+XGridSubUnit	.1;
+XTitle		i;
+XUnitName	mA;
+XScale		.005;
+#scara de reprezentare pe X in metri/unitate a axei x
+#unitatea este socotita 1 relativ la XRange si nu depinde de XGridUnit
+
+YGridUnit		1;
+YGridSubUnit	.1;
+YTitle		U;
+YUnitName	mV;
+YScale		.005;
+#scara de reprezentare pe Y in metri/unitate a axei y
+
+Group 1;
+	Pt	5	2;
+	Pt	10	4.5;
+	Pt	15	6.5;
+	Pt	20	7.5;
+	Pt	25	9;
+	Pt	30	10;
+	Color 0xff0000;
+	Legend IB=0.5A;
+Group 2;
+	Pt	5	2.5;
+	Pt	10	5;
+	Pt	15	7;
+	Pt	20	9;
+	Pt	25	10.5;
+	Pt	30	11.5;
+	Color 0x00ff00;
+	Legend IB=1A;
+Group 3;
+	Pt	5	3;
+	Pt	10	6.5;
+	Pt	15	9;
+	Pt	20	11;
+	Pt	25	12.5;
+	Pt	30	14.5;
+	Color 0x0000ff;
+	Legend IB=1.5A;
+Group 4;
+	Pt	5	3;
+	Pt	10	7;
+	Pt	15	10;
+	Pt	20	12;
+	Pt	25	14.5;
+	Pt	30	16;
+	Color 0x00ffff;
+	Legend IB=2A;
+Group 5;
+	Pt	5	4;
+	Pt	10	7.5;
+	Pt	15	11;
+	Pt	20	13.5;
+	Pt	25	15.5;
+	Pt	30	18;
+	Color 0xff00ff;
+	Legend IB=2.5A;
+Group 6;
+	Pt	5	3.5;
+	Pt	10	8.5;
+	Pt	15	13;
+	Pt	20	15;
+	Pt	25	17.5;
+	Pt	30	20;
+	Color 0xffff00;
+	Legend IB=3A;
+Group 7;
+	Pt	5	4.5;
+	Pt	10	8.5;
+	Pt	15	13.5;
+	Pt	20	16.5;
+	Pt	25	19.5;
+	Pt	30	21.5;
+	Color 0xff7f7f;
+	Legend IB=3.5A;
+Group 8;
+	Pt	5	4.5;
+	Pt	10	9;
+	Pt	15	13.5;
+	Pt	20	17;
+	Pt	25	19.5;
+	Pt	30	22;
+	Color 0x7fff7f;
+	Legend IB=4A;
+Group 9;
+	Pt	5	4.5;
+	Pt	10	10;
+	Pt	15	13.5;
+	Pt	20	17.5;
+	Pt	25	20.5;
+	Pt	30	22.5;
+	Color 0x7f7fff;
+	Legend IB=4.5A;
+Group 10;
+	Pt	5	4;
+	Pt	10	10;
+	Pt	15	14;
+	Pt	20	18;
+	Pt	25	20.5;
+	Pt	30	23;
+	Color 0x7f7f00;
+	Legend IB=5A;
+
+FontSize 4;
+
+#comenzi
+DrawGrid;
+DrawLegend;
+
+PlotGroup 1 Cross;
+PlotGroup 2 X;
+PlotGroup 3 Circle;
+PlotGroup 4 Delta;
+PlotGroup 5 Nabla;
+PlotGroup 6 Square;
+PlotGroup 7 Cross;
+PlotGroup 8 X;
+PlotGroup 9 Circle;
+PlotGroup 10 Delta;
+
+FitLine 1 0 0 0 20 1 2 3 4;
+#grup punct_control_x punct_control_y xmin xmax puncte_din_grup
+FitLine 2 0 0 0 20 1 2 3 4;
+FitLine 3 0 0 0 20 1 2 3 4;
+FitLine 4 0 0 0 20 1 2 3 4;
+FitLine 5 0 0 0 20 1 2 3 4;
+FitLine 6 0 0 0 20 1 2 3 4;
+FitLine 7 0 0 0 20 1 2 3 4;
+FitLine 8 0 0 0 20 1 2 3 4;
+FitLine 9 0 0 0 20 1 2 3 4;
+FitLine 10 0 0 0 20 1 2 3 4;
