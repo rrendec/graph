@@ -430,8 +430,89 @@ static int cmmpline_e(void *c) {
 	return 0;
 }
 
+static int bspline2_s(void *c) {
+	C(c)->fl_n=0;
+	return 0;
+}
+
+static int bspline2_a(void *c, char *s) {
+	if (C(c)->fl_n) {
+		sscanf(s, "%d", &C(c)->fl_pts[C(c)->fl_n-1]);
+	} else {
+		sscanf(s, "%d", &C(c)->fl_g);
+	}
+	C(c)->fl_n++;
+	return 0;
+}
+#define PAS_CURBA 0.1
+static int bspline2_e(void *c) {
+	int i;
+	double u;
+	struct point p[3], p1, p2;
+
+	C(c)->fl_n-=1+2; /*1 pt. ca primul arg. nu e pct. si 2 pt. ca se folosesc 3 pct. la spline */
+
+	for (i=0; i<C(c)->fl_n; i++) {
+		p[0]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i]-1];
+		p[1]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i+1]-1];
+		p[2]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i+2]-1];
+		p2=bspline2(0, p);
+		for (u=PAS_CURBA; u<1; u+=PAS_CURBA) {
+			p1=p2;
+			p2=bspline2(u, p);
+			gdImageLine(C(c)->g->img,
+					XC(C(c)->g, p1.x), YC(C(c)->g, p1.y),
+					XC(C(c)->g, p2.x), YC(C(c)->g, p2.y),
+					C(c)->g->grps[C(c)->fl_g].col);
+		}
+	}
+	return 0;
+}
+
+static int bspline3_s(void *c) {
+	C(c)->fl_n=0;
+	return 0;
+}
+
+static int bspline3_a(void *c, char *s) {
+	if (C(c)->fl_n) {
+		sscanf(s, "%d", &C(c)->fl_pts[C(c)->fl_n-1]);
+	} else {
+		sscanf(s, "%d", &C(c)->fl_g);
+	}
+	C(c)->fl_n++;
+	return 0;
+}
+static int bspline3_e(void *c) {
+	int i;
+	double u;
+	struct point p[4], p1, p2;
+
+	C(c)->fl_n-=1+3; /*1 pt. ca primul arg. nu e pct. si 3 pt. ca se folosesc 4 pct. la spline */
+
+	for (i=0; i<C(c)->fl_n; i++) {
+		p[0]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i]-1];
+		p[1]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i+1]-1];
+		p[2]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i+2]-1];
+		p[3]=C(c)->g->grps[C(c)->fl_g].pts[C(c)->fl_pts[i+3]-1];
+		p2=bspline3(0, p);
+		for (u=PAS_CURBA; u<1; u+=PAS_CURBA) {
+			p1=p2;
+			p2=bspline3(u, p);
+			gdImageLine(C(c)->g->img,
+					XC(C(c)->g, p1.x), YC(C(c)->g, p1.y),
+					XC(C(c)->g, p2.x), YC(C(c)->g, p2.y),
+					C(c)->g->grps[C(c)->fl_g].col);
+		}
+	}
+	return 0;
+}
+
+
 const struct spa_keyword lang_main[]={
 /*	keyword				start			arg				end				bloc_start		bloc_end */
+	"bspline2",			bspline2_s,		bspline2_a,		bspline2_e,		NULL,			NULL,
+	"bspline3",			bspline3_s,		bspline3_a,		bspline3_e,		NULL,			NULL,
 	"canvassize",		canvassize_s,	canvassize_a,	NULL,			NULL,			NULL,
 	"cmmpline",			cmmpline_s,		cmmpline_a,		cmmpline_e,		NULL,			NULL,
 	"color",			NULL,			color_a,		NULL,			NULL,			NULL,

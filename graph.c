@@ -39,8 +39,8 @@ gdFont *fonts[5];
 const struct color_def color_defaults[]={
 	C_BACKGROUND,			255,	255,	255,
 	C_AXES,					0,		0,		0,
-	C_GRID,					192,	192,	192,
-	C_SUBGRID,				224,	224,	224,
+	C_GRID,					0x89,	0x89,	0x89,
+	C_SUBGRID,				0xB7,	0xB7,	0xB7,
 	C_AXISUNIT,				0,		0,		0,
 	C_AXISUNITNAME,			255,	0,		0,
 	C_NONE,					0,		0,		0
@@ -259,6 +259,32 @@ void draw_legend(struct graph *g) {
 		gdImageFilledRectangle(g->img, x, y1, x+w, y1+h, g->grps[i].col);
 		gdImageString(g->img, fnt, x+w+s, y, g->grps[i].legend, col);
 	}
+}
+
+struct point bspline2(double u, struct point *pts) {
+	double u2, b, b1, b2;
+	struct point p;
+	u2=u*u;
+	b=0.5*(1-2*u+u2);
+	b1=0.5*(-2*u2+2*u+1);
+	b2=0.5*u2;
+	p.x=b*pts[0].x+b1*pts[1].x+b2*pts[2].x;
+	p.y=b*pts[0].y+b1*pts[1].y+b2*pts[2].y;
+	return p;
+}
+
+struct point bspline3(double u, struct point *pts) {
+	double u2, u3, b, b1, b2, b3;
+	struct point p;
+	u2=u*u;
+	u3=u*u2;
+	b=1.0/6*(-u3+3*u2-3*u+1);
+	b1=1.0/6*(3*u3-6*u2+4);
+	b2=1.0/6*(-3*u3+3*u2+3*u+1);
+	b3=1.0/6*u3;
+	p.x=b*pts[0].x+b1*pts[1].x+b2*pts[2].x+b3*pts[3].x;
+	p.y=b*pts[0].y+b1*pts[1].y+b2*pts[2].y+b3*pts[3].y;
+	return p;
 }
 
 int main(int argc, char **argv) {

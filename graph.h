@@ -124,5 +124,7 @@ typedef void				(*point_func)(struct graph *, double, double, int);
 
 extern const point_func solve_sym (const char *);
 extern void draw_legend(struct graph *);
+extern struct point bspline2(double u, struct point *pts);
+extern struct point bspline3(double u, struct point *pts);
 
 #endif

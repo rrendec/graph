@@ -1,54 +1,106 @@
 Resolution 150;
 
 CanvasSize .18 .2;
-LegendSize	0.04 0.02;
+LegendSize	0.04 0.03;
 LegendSpace 0.01;
 LegendTitle LEGENDA;
 
-XRange 2.9e-3 3.4e-3;
-YRange 6.2 6.5;
+XRange 0 120;
+YRange 0 8;
 
-XGridUnit .4e-4;
-XGridSubUnit .04e-4;
-XTitle 1/T;
-XUnitName K^(-1);
-XScale 300;
+XGridUnit 10;
+XGridSubUnit 1;
+XTitle Ua;
+XUnitName V;
+XScale 0.0013;
 
-YGridUnit .02;
-YGridSubUnit .002;
-YTitle ln(Rd/kT)^(1/2);
-YUnitName unitate;
-YScale .5;
+YGridUnit 1;
+YGridSubUnit .1;
+YTitle Ia;
+YUnitName mA;
+YScale .018;
 
 Group 1;
-Pt 3.300330e-03 6.485068e+00;
-Pt 3.246753e-03 6.437988e+00;
-Pt 3.194888e-03 6.420381e+00;
-Pt 3.144654e-03 6.400142e+00;
-Pt 3.095975e-03 6.381888e+00;
-Pt 3.048780e-03 6.362494e+00;
-Pt 3.003003e-03 6.347640e+00;
-Pt 2.958580e-03 6.317960e+00;
-Pt 2.915452e-03 6.299271e+00;
+Pt 0 0;
+Pt 20 0.4;
+Pt 40 0.46;
+Pt 60 0.48;
+Pt 80 0.5;
+Pt 100 0.52;
+Pt 120 0.53;
 Color 0xff0000;
-Legend Incalzire;
+Legend If=54\ mA;
 
 Group 2;
-Pt 2.958580e-03 6.340952e+00;
-Pt 3.003003e-03 6.358640e+00;
-Pt 3.048780e-03 6.375732e+00;
-Pt 3.095975e-03 6.398923e+00;
-Pt 3.144654e-03 6.417815e+00;
-Pt 3.194888e-03 6.445468e+00;
-Pt 3.225806e-03 6.449999e+00;
+Pt 0 0;
+Pt 20 0.57;
+Pt 40 0.72;
+Pt 60 0.76;
+Pt 80 0.79;
+Pt 100 0.91;
+Pt 120 0.84;
 Color 0x0000ff;
-Legend Racire;
+Legend If=56\ mA;
+
+Group 3;
+Pt 0 0;
+Pt 20 0.71;
+Pt 40 0.83;
+Pt 60 1.32;
+Pt 80 1.56;
+Pt 100 1.62;
+Pt 120 1.68;
+Color 0x00ff00;
+Legend If=58\ mA;
+
+Group 4;
+Pt 0 0;
+Pt 20 0.87;
+Pt 40 2.07;
+Pt 60 2.3;
+Pt 80 2.5;
+Pt 100 2.6;
+Pt 120 2.7;
+Color 0x808000;
+Legend If=60\ mA;
+
+Group 5;
+Pt 0 0;
+Pt 20 0.9;
+Pt 40 2.58;
+Pt 60 3.7;
+Pt 80 4.2;
+Pt 100 4.5;
+Pt 120 4.8;
+Color 0x008080;
+Legend If=62\ mA;
+
+Group 6;
+Pt 0 0;
+Pt 20 0.8;
+Pt 40 2.67;
+Pt 60 4.6;
+Pt 80 6.2;
+Pt 100 7.1;
+Pt 120 7.8;
+Color 0x800080;
+Legend If=64\ mA;
 
 FontSize 4;
 DrawGrid;
 PlotGroup 1 Cross;
-PlotGroup 2 x;
+PlotGroup 2 X;
+PlotGroup 3 Circle;
+PlotGroup 4 Delta;
+PlotGroup 5 Nabla;
+PlotGroup 6 Square;
+
+Bspline3 1 1 1 1 2 3 4 5 6 7 7 7;
+Bspline3 2 1 1 1 2 3 4 5 6 7 7 7;
+Bspline3 3 1 1 1 2 3 4 5 6 7 7 7;
+Bspline3 4 1 1 1 2 3 4 5 6 7 7 7;
+Bspline3 5 1 1 1 2 3 4 5 6 7 7 7;
+Bspline3 6 1 1 1 2 3 4 5 6 7 7 7;
+
 DrawLegend;
 
-CmmpLine 1 2.9e-3 .00332 1 2 3 4 5 6 7 8 9;
-CmmpLine 2 2.9e-3 .00332 1 2 3 4 5 6 7;
